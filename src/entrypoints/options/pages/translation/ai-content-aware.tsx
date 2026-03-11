@@ -1,24 +1,16 @@
 import { i18n } from "#imports"
 import { deepmerge } from "deepmerge-ts"
 import { useAtom } from "jotai"
-import { useMemo } from "react"
 import { HelpTooltip } from "@/components/help-tooltip"
+import { ProviderFeatureStatusIndicator } from "@/components/provider-feature-status-indicator"
 import { Field, FieldContent, FieldLabel } from "@/components/ui/base-ui/field"
 import { Switch } from "@/components/ui/base-ui/switch"
-import { isLLMProviderConfig } from "@/types/config/provider"
-import { configFieldsAtomMap } from "@/utils/atoms/config"
-import { getProviderConfigById } from "@/utils/config/helpers"
-import { LLMStatusIndicator } from "../../../../components/llm-status-indicator"
+import { configAtom, configFieldsAtomMap } from "@/utils/atoms/config"
 import { ConfigCard } from "../../components/config-card"
 
 export function AIContentAware() {
   const [translateConfig, setTranslateConfig] = useAtom(configFieldsAtomMap.translate)
-  const [providersConfig] = useAtom(configFieldsAtomMap.providersConfig)
-
-  const hasLLMProvider = useMemo(() => {
-    const providerConfig = getProviderConfigById(providersConfig, translateConfig.providerId)
-    return providerConfig ? isLLMProviderConfig(providerConfig) : false
-  }, [providersConfig, translateConfig.providerId])
+  const [config] = useAtom(configAtom)
 
   return (
     <ConfigCard
@@ -27,7 +19,7 @@ export function AIContentAware() {
       description={(
         <>
           {i18n.t("options.translation.aiContentAware.description")}
-          <LLMStatusIndicator hasLLMProvider={hasLLMProvider} featureName={i18n.t("options.general.featureProviders.features.translate")} />
+          <ProviderFeatureStatusIndicator providerId={config.translate.aiContentAware.providerId} featureType="contextInjection" />
         </>
       )}
     >
@@ -40,11 +32,13 @@ export function AIContentAware() {
         </FieldContent>
         <Switch
           id="ai-content-aware-toggle"
-          checked={translateConfig.enableAIContentAware}
+          checked={translateConfig.aiContentAware.enabled}
           onCheckedChange={(checked) => {
             void setTranslateConfig(
               deepmerge(translateConfig, {
-                enableAIContentAware: checked,
+                aiContentAware: {
+                  enabled: checked,
+                },
               }),
             )
           }}

@@ -97,6 +97,29 @@ export function isPureTranslateProviderConfig(config: ProviderConfig): boolean {
 }
 
 /* ──────────────────────────────
+  Provider feature support flags
+  ────────────────────────────── */
+
+// Which providers support batch translation
+export const PROVIDER_BATCH_TRANSLATION_SUPPORT: ReadonlySet<AllProviderTypes> = new Set(LLM_PROVIDER_TYPES)
+
+// Which providers support context injection (AI smart context)
+export const PROVIDER_CONTEXT_INJECTION_SUPPORT: ReadonlySet<AllProviderTypes> = new Set(LLM_PROVIDER_TYPES)
+
+export function supportsBatchTranslation(provider: AllProviderTypes): boolean {
+  return PROVIDER_BATCH_TRANSLATION_SUPPORT.has(provider)
+}
+export function supportsBatchTranslationConfig(config: ProviderConfig): boolean {
+  return supportsBatchTranslation(config.provider)
+}
+export function supportsContextInjection(provider: AllProviderTypes): boolean {
+  return PROVIDER_CONTEXT_INJECTION_SUPPORT.has(provider)
+}
+export function supportsContextInjectionConfig(config: ProviderConfig): boolean {
+  return supportsContextInjection(config.provider)
+}
+
+/* ──────────────────────────────
   Providers config schema
   ────────────────────────────── */
 

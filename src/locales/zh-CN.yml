@@ -5,6 +5,10 @@ uninstallSurveyUrl: https://tally.so/r/3E9XDL
 dataTypes:
   string: 文本
   number: 数字
+components:
+  providerFeatureStatusIndicator:
+    supported: 您选定的翻译服务支持该特性
+    notSupported: 您选定的翻译服务不支持该特性
 contextMenu:
   translate: 翻译
   showOriginal: 显示原文
@@ -28,7 +32,7 @@ popup:
   blog:
     notification: 陪读蛙更新动态
   aiSmartContext: AI 智能上下文
-  aiSmartContextDescription: 结合网页上下文提升翻译效果。需要配置 LLM 翻译服务商。
+  aiSmartContextDescription: 将网页概要和待翻译文本一起发送到翻译服务，提升翻译效果。需要选择支持本特性的翻译服务。
   more:
     title: 更多
     translationHub: 翻译中心
@@ -180,6 +184,7 @@ options:
         tts: 文本转语音
         inputTranslation: 输入翻译
         videoSubtitles: 视频字幕
+        aiContentAware: AI 智能上下文
     translationConfig:
       model:
         title: 模型
@@ -615,9 +620,9 @@ options:
         description: 基础检测快速且免费。LLM 检测更准确，但会增加延迟和 API 费用。
     aiContentAware:
       title: AI 智能上下文翻译
-      description: 通过向 AI 提供文章上下文来提高翻译质量
+      description: 将 LLM 生成的网页概要与原文一起发送到翻译服务，提升翻译效果。
       enable: 启用 AI 智能上下文翻译
-      enableDescription: AI 使用文章摘要来提高翻译准确性。需要 LLM 翻译提供商。刚开始翻译页面时会有延迟，并增加 API 费用。
+      enableDescription: 将 LLM 生成的网页概要与原文一起发送到翻译服务，提升翻译效果。需要使用支持此特性的翻译服务。生成 网页概要 用到了 LLM，所以刚开始翻译页面时会有延迟，并增加 API 费用。
   tts:
     title: 文本转语音
     description: 使用 Edge TTS 语音参数来自定义朗读按钮。

@@ -89,7 +89,10 @@ export const translateConfigSchema = z.object({
     skipLanguages: z.array(langCodeISO6393Schema),
     enableSkipLanguagesLLMDetection: z.boolean(),
   }),
-  enableAIContentAware: z.boolean(),
+  aiContentAware: z.object({
+    enabled: z.boolean(),
+    providerId: z.string().nonempty(),
+  }),
   customPromptsConfig: customPromptsConfigSchema,
   requestQueueConfig: requestQueueConfigSchema,
   batchQueueConfig: batchQueueConfigSchema,

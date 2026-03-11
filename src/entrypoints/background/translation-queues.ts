@@ -3,9 +3,10 @@ import type { LLMProviderConfig, ProviderConfig } from "@/types/config/provider"
 import type { BatchQueueConfig, RequestQueueConfig } from "@/types/config/translate"
 import type { ArticleContent } from "@/types/content"
 import type { PromptResolver } from "@/utils/host/translate/api/ai"
-import { isLLMProviderConfig } from "@/types/config/provider"
+import { supportsBatchTranslationConfig, supportsContextInjectionConfig } from "@/types/config/provider"
 import { putBatchRequestRecord } from "@/utils/batch-request-record"
 import { DEFAULT_CONFIG } from "@/utils/constants/config"
+import { resolveProviderConfig } from "@/utils/constants/feature-providers"
 import { BATCH_SEPARATOR } from "@/utils/constants/prompt"
 import { generateArticleSummary } from "@/utils/content/summary"
 import { cleanText } from "@/utils/content/utils"
@@ -175,19 +176,28 @@ export async function setUpWebPageTranslationQueue() {
       title: articleTitle || "",
     }
 
-    if (isLLMProviderConfig(providerConfig)) {
-      // Generate or fetch cached summary if AI Content Aware is enabled
+    // Generate or fetch cached summary if AI Content Aware is enabled and provider supports context injection
+    if (supportsContextInjectionConfig(providerConfig)) {
       const config = await ensureInitializedConfig()
-      if (config?.translate.enableAIContentAware && articleTitle !== undefined && articleTextContent !== undefined) {
-        content.summary = await getOrGenerateSummary(articleTitle, articleTextContent, providerConfig, requestQueue)
+      if (config?.translate.aiContentAware.enabled && articleTitle !== undefined && articleTextContent !== undefined) {
+        try {
+          const aiContentAwareProviderConfig = resolveProviderConfig(config, "translate.aiContentAware")
+          content.summary = await getOrGenerateSummary(articleTitle, articleTextContent, aiContentAwareProviderConfig, requestQueue)
+        }
+        catch (error) {
+          logger.warn("Failed to resolve AI Content Aware provider config:", error)
+        }
       }
+    }
 
+    // Use batch queue if provider supports batch translation, otherwise use regular queue
+    if (supportsBatchTranslationConfig(providerConfig)) {
       const data = { text, langConfig, providerConfig, hash, scheduleAt, content }
       result = await batchQueue.enqueue(data)
     }
     else {
       // Create thunk based on type and params
-      const thunk = () => executeTranslate(text, langConfig, providerConfig, getTranslatePrompt)
+      const thunk = () => executeTranslate(text, langConfig, providerConfig, getTranslatePrompt, { content })
       result = await requestQueue.enqueue(thunk, scheduleAt, hash)
     }
 
@@ -242,17 +252,27 @@ export async function setUpSubtitlesTranslationQueue() {
       title: videoTitle || "",
     }
 
-    if (isLLMProviderConfig(providerConfig)) {
+    // Generate or fetch cached summary if AI Content Aware is enabled and provider supports context injection
+    if (supportsContextInjectionConfig(providerConfig)) {
       const runtimeConfig = await ensureInitializedConfig()
-      if (runtimeConfig?.translate.enableAIContentAware && videoTitle && subtitlesContext) {
-        content.summary = await getOrGenerateSummary(videoTitle, subtitlesContext, providerConfig, requestQueue)
+      if (runtimeConfig?.translate.aiContentAware.enabled && videoTitle && subtitlesContext) {
+        try {
+          const aiContentAwareProviderConfig = resolveProviderConfig(runtimeConfig, "translate.aiContentAware")
+          content.summary = await getOrGenerateSummary(videoTitle, subtitlesContext, aiContentAwareProviderConfig, requestQueue)
+        }
+        catch (error) {
+          logger.warn("Failed to resolve AI Content Aware provider config:", error)
+        }
       }
+    }
 
+    // Use batch queue if provider supports batch translation, otherwise use regular queue
+    if (supportsBatchTranslationConfig(providerConfig)) {
       const data = { text, langConfig, providerConfig, hash, scheduleAt, content }
       result = await batchQueue.enqueue(data)
     }
     else {
-      const thunk = () => executeTranslate(text, langConfig, providerConfig, getSubtitlesTranslatePrompt)
+      const thunk = () => executeTranslate(text, langConfig, providerConfig, getSubtitlesTranslatePrompt, { content })
       result = await requestQueue.enqueue(thunk, scheduleAt, hash)
     }
 

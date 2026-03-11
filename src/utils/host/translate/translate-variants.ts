@@ -41,7 +41,7 @@ export async function translateTextForPage(text: string): Promise<string> {
     text,
     langConfig: config.language,
     providerConfig,
-    enableAIContentAware: config.translate.enableAIContentAware,
+    enableAIContentAware: config.translate.aiContentAware.enabled,
   })
 }
 
@@ -57,7 +57,7 @@ export async function translateTextForSelection(text: string): Promise<string> {
     langConfig: config.language,
     extraHashTags: ["selectionTranslation"],
     providerConfig,
-    enableAIContentAware: config.translate.enableAIContentAware,
+    enableAIContentAware: config.translate.aiContentAware.enabled,
   })
 }
 
@@ -102,6 +102,6 @@ export async function translateTextForInput(
     },
     extraHashTags: [`inputTranslation:${fromLang}->${toLang}`],
     providerConfig,
-    enableAIContentAware: config.translate.enableAIContentAware,
+    enableAIContentAware: config.translate.aiContentAware.enabled,
   })
 }

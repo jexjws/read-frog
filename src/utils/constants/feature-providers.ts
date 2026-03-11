@@ -1,4 +1,5 @@
 import type { Config } from "@/types/config/config"
+import type { LLMProviderConfig, TranslateProviderConfig } from "@/types/config/provider"
 import { isLLMProvider, isTranslateProvider } from "@/types/config/provider"
 import { mergeWithArrayOverwrite } from "../atoms/config"
 import { getProviderConfigById } from "../config/helpers"
@@ -9,6 +10,7 @@ export const FEATURE_KEYS = [
   "selectionToolbar.translate",
   "selectionToolbar.vocabularyInsight",
   "inputTranslation",
+  "translate.aiContentAware",
 ] as const
 
 export type FeatureKey = (typeof FEATURE_KEYS)[number]
@@ -45,6 +47,11 @@ export const FEATURE_PROVIDER_DEFS = {
     getProviderId: (c: Config) => c.inputTranslation.providerId,
     configPath: ["inputTranslation", "providerId"],
   },
+  "translate.aiContentAware": {
+    isProvider: isLLMProvider,
+    getProviderId: (c: Config) => c.translate.aiContentAware.providerId,
+    configPath: ["translate", "aiContentAware", "providerId"],
+  },
 } as const satisfies Record<FeatureKey, FeatureProviderDef>
 
 /** Maps FeatureKey (with dots) to i18n-safe key (with underscores) for `options.general.featureProviders.features.*` */
@@ -54,16 +61,29 @@ export const FEATURE_KEY_I18N_MAP: Record<FeatureKey, string> = {
   "selectionToolbar.translate": "selectionToolbar_translate",
   "selectionToolbar.vocabularyInsight": "selectionToolbar_vocabularyInsight",
   "inputTranslation": "inputTranslation",
+  "translate.aiContentAware": "aiContentAware",
 }
 
-export function resolveProviderConfig(config: Config, featureKey: FeatureKey) {
+interface FeatureProviderTypeMap {
+  "translate": TranslateProviderConfig
+  "videoSubtitles": TranslateProviderConfig
+  "selectionToolbar.translate": TranslateProviderConfig
+  "selectionToolbar.vocabularyInsight": LLMProviderConfig
+  "inputTranslation": TranslateProviderConfig
+  "translate.aiContentAware": LLMProviderConfig
+}
+
+export function resolveProviderConfig<K extends FeatureKey>(
+  config: Config,
+  featureKey: K,
+): FeatureProviderTypeMap[K] {
   const def = FEATURE_PROVIDER_DEFS[featureKey]
   const providerId = def.getProviderId(config)
   const providerConfig = getProviderConfigById(config.providersConfig, providerId)
   if (!providerConfig) {
     throw new Error(`No provider config for id "${providerId}" (feature "${featureKey}")`)
   }
-  return providerConfig
+  return providerConfig as FeatureProviderTypeMap[K]
 }
 
 /**

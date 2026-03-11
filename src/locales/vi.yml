@@ -5,6 +5,10 @@ uninstallSurveyUrl: https://tally.so/r/nPK6Ob
 dataTypes:
   string: Văn bản
   number: Số
+components:
+  providerFeatureStatusIndicator:
+    supported: Dịch vụ dịch bạn chọn hỗ trợ tính năng này
+    notSupported: Dịch vụ dịch bạn chọn không hỗ trợ tính năng này
 contextMenu:
   translate: Dịch
   showOriginal: Hiển thị bản gốc
@@ -28,7 +32,7 @@ popup:
   blog:
     notification: Có gì mới trong Read Frog
   aiSmartContext: Ngữ cảnh thông minh AI
-  aiSmartContextDescription: Sử dụng ngữ cảnh trang web để cải thiện chất lượng dịch. Yêu cầu nhà cung cấp dịch LLM.
+  aiSmartContextDescription: Gửi tóm tắt trang web cùng với văn bản đến dịch vụ dịch để cải thiện chất lượng. Yêu cầu dịch vụ dịch hỗ trợ tính năng này.
   more:
     title: Thêm
     translationHub: Trung tâm Dịch thuật
@@ -179,6 +183,7 @@ options:
         tts: Chuyển văn bản thành giọng nói
         inputTranslation: Dịch đầu vào
         videoSubtitles: Phụ đề video
+        aiContentAware: Ngữ cảnh thông minh AI
     translationConfig:
       model:
         title: Mô hình
@@ -503,9 +508,9 @@ options:
         description: Phát hiện cơ bản nhanh và miễn phí. Phát hiện LLM chính xác hơn nhưng thêm độ trễ và chi phí API.
     aiContentAware:
       title: Dịch ngữ cảnh thông minh AI
-      description: Nâng cao chất lượng dịch bằng cách cung cấp ngữ cảnh bài viết cho AI
+      description: Gửi tóm tắt trang web được tạo bởi LLM cùng với văn bản đến dịch vụ dịch để cải thiện chất lượng.
       enable: Bật dịch ngữ cảnh thông minh AI
-      enableDescription: AI sử dụng tóm tắt bài viết để cải thiện độ chính xác dịch. Yêu cầu nhà cung cấp LLM. Thêm độ trễ khi bắt đầu dịch trang và tăng chi phí API.
+      enableDescription: Gửi tóm tắt trang web được tạo bởi LLM cùng với văn bản đến dịch vụ dịch để cải thiện chất lượng. Yêu cầu dịch vụ dịch hỗ trợ tính năng này. Việc tạo tóm tắt trang web sử dụng LLM, vì vậy sẽ có độ trễ khi bắt đầu dịch trang và tăng chi phí API.
   tts:
     title: Chuyển văn bản thành giọng nói
     description: Tùy chỉnh nút Đọc với cài đặt giọng nói Edge TTS.
