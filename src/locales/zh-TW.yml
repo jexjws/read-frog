@@ -164,6 +164,7 @@ options:
         vercel: 針對網頁內容翻譯和分析優化的 AI 模型
         volcengine: 字節跳動旗下雲平台，提供豆包系列大模型
         minimax: MiniMax AI平台，提供先進的MiniMax-M2系列大模型
+        alibabaBailian: 阿里雲百煉平台，提供通義千問系列大模型
     apiKey:
       showAPIKey: 顯示 API Key
     howToConfigure: 如何配置?

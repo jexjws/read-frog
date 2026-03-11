@@ -165,6 +165,7 @@ options:
         vercel: Optimized AI models for web content translation and analysis
         volcengine: ByteDance's cloud AI platform offering Doubao models for translation and reading
         minimax: MiniMax AI platform offering advanced MiniMax-M2 models for text generation
+        alibabaBailian: Alibaba Cloud's Bailian platform offering Qwen series models
     apiKey:
       showAPIKey: Show API Key
     howToConfigure: How to configure?

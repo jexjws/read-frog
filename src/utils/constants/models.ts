@@ -28,6 +28,7 @@ export const LLM_PROVIDER_MODELS = {
   "ollama": ["gemma3:4b", "llama3.2:3b"],
   "volcengine": ["doubao-seed-1-6-flash-250828", "doubao-seed-1-6-lite-251015", "doubao-seed-1-6-251015"],
   "minimax": ["MiniMax-M2", "MiniMax-M2-Stable"],
+  "alibaba-bailian": ["qwen3.5-plus", "qwen3.5-flash", "qwen-flash", "qwen-long", "qwen-plus"],
 } as const
 
 export const NON_API_TRANSLATE_PROVIDERS = ["google-translate", "microsoft-translate"] as const

@@ -1,6 +1,7 @@
 import type { Theme } from "@/components/providers/theme-provider"
 import type { AllProviderTypes, APIProviderTypes, LLMProviderModels, ProviderConfig, ProvidersConfig } from "@/types/config/provider"
 import { i18n } from "#imports"
+import alibabaBailianLogo from "@/assets/providers/alibaba-bailian-color.svg"
 import customProviderLogo from "@/assets/providers/custom-provider.svg"
 import deeplxLogoDark from "@/assets/providers/deeplx-dark.svg"
 import deeplxLogoLight from "@/assets/providers/deeplx-light.svg"
@@ -128,6 +129,11 @@ export const DEFAULT_LLM_PROVIDER_MODELS: LLMProviderModels = {
   },
   "minimax": {
     model: "MiniMax-M2",
+    isCustomModel: false,
+    customModel: null,
+  },
+  "alibaba-bailian": {
+    model: "qwen3.5-flash",
     isCustomModel: false,
     customModel: null,
   },
@@ -269,6 +275,11 @@ export const PROVIDER_ITEMS: Record<AllProviderTypes, { logo: (theme: Theme) => 
       logo: getLobeIconsCDNUrlFn("minimax-color"),
       name: "MiniMax",
       website: "https://platform.minimax.io",
+    },
+    "alibaba-bailian": {
+      logo: () => alibabaBailianLogo,
+      name: "Alibaba Cloud Bailian",
+      website: "https://bailian.console.aliyun.com/",
     },
   }
 
@@ -489,6 +500,15 @@ export const DEFAULT_PROVIDER_CONFIG = {
     enabled: true,
     provider: "minimax",
     model: DEFAULT_LLM_PROVIDER_MODELS.minimax,
+  },
+  "alibaba-bailian": {
+    id: "alibaba-bailian-default",
+    name: PROVIDER_ITEMS["alibaba-bailian"].name,
+    description: i18n.t("options.apiProviders.providers.description.alibabaBailian"),
+    enabled: true,
+    provider: "alibaba-bailian",
+    baseURL: "https://dashscope.aliyuncs.com/compatible-mode/v1",
+    model: DEFAULT_LLM_PROVIDER_MODELS["alibaba-bailian"],
   },
 } as const satisfies Record<AllProviderTypes, ProviderConfig>
 

@@ -1,6 +1,7 @@
 import type { Config } from "@/types/config/config"
 import type { LLMProviderConfig } from "@/types/config/provider"
 import { storage } from "#imports"
+import { createAlibaba } from "@ai-sdk/alibaba"
 import { createAmazonBedrock } from "@ai-sdk/amazon-bedrock"
 import { createAnthropic } from "@ai-sdk/anthropic"
 import { createCerebras } from "@ai-sdk/cerebras"
@@ -30,6 +31,7 @@ const CREATE_AI_MAPPER = {
   "tensdaq": createOpenAICompatible,
   "ai302": createOpenAICompatible,
   "volcengine": createOpenAICompatible,
+  "alibaba-bailian": createAlibaba,
   "openrouter": createOpenRouter,
   "openai-compatible": createOpenAICompatible,
   "openai": createOpenAI,
