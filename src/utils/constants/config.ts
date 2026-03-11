@@ -70,7 +70,10 @@ export const DEFAULT_CONFIG: Config = {
       minWordsPerNode: DEFAULT_MIN_WORDS_PER_NODE,
       skipLanguages: [],
     },
-    enableAIContentAware: false,
+    aiContentAware: {
+      enabled: false,
+      providerId: "openai-default",
+    },
     customPromptsConfig: DEFAULT_TRANSLATE_PROMPTS_CONFIG,
     requestQueueConfig: {
       capacity: DEFAULT_REQUEST_CAPACITY,
