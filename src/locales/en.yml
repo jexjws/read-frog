@@ -166,6 +166,7 @@ options:
         volcengine: ByteDance's cloud AI platform offering Doubao models for translation and reading
         minimax: MiniMax AI platform offering advanced MiniMax-M2 models for text generation
         alibabaBailian: Alibaba Cloud's Bailian platform offering Qwen series models
+        alibabaBailianMT: Alibaba Cloud's Bailian machine translation series, providing high-quality multilingual translation services, only supports Qwen-MT series models
     apiKey:
       showAPIKey: Show API Key
     howToConfigure: How to configure?

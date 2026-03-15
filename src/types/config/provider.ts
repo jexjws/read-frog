@@ -9,7 +9,7 @@ export { LLM_PROVIDER_MODELS, NON_API_TRANSLATE_PROVIDERS, NON_API_TRANSLATE_PRO
   ────────────────────────────── */
 
 // translate provider names
-export const TRANSLATE_PROVIDER_TYPES = ["google-translate", "microsoft-translate", "deeplx", "openai", "deepseek", "google", "anthropic", "xai", "openai-compatible", "siliconflow", "tensdaq", "ai302", "bedrock", "groq", "deepinfra", "mistral", "togetherai", "cohere", "fireworks", "cerebras", "replicate", "perplexity", "vercel", "openrouter", "ollama", "volcengine", "minimax", "alibaba-bailian"] as const satisfies Readonly<
+export const TRANSLATE_PROVIDER_TYPES = ["google-translate", "microsoft-translate", "deeplx", "openai", "deepseek", "google", "anthropic", "xai", "openai-compatible", "siliconflow", "tensdaq", "ai302", "bedrock", "groq", "deepinfra", "mistral", "togetherai", "cohere", "fireworks", "cerebras", "replicate", "perplexity", "vercel", "openrouter", "ollama", "volcengine", "minimax", "alibaba-bailian", "alibaba-bailian-mt"] as const satisfies Readonly<
   (keyof typeof LLM_PROVIDER_MODELS | typeof PURE_TRANSLATE_PROVIDERS[number])[]
 >
 export type TranslateProviderTypes = typeof TRANSLATE_PROVIDER_TYPES[number]
@@ -53,7 +53,7 @@ export function isNonCustomLLMProviderConfig(config: ProviderConfig): config is 
   return isNonCustomLLMProvider(config.provider)
 }
 
-export const API_PROVIDER_TYPES = ["siliconflow", "tensdaq", "ai302", "openai-compatible", "openai", "deepseek", "google", "anthropic", "xai", "deeplx", "bedrock", "groq", "deepinfra", "mistral", "togetherai", "cohere", "fireworks", "cerebras", "replicate", "perplexity", "vercel", "openrouter", "ollama", "volcengine", "minimax", "alibaba-bailian"] as const satisfies Readonly<
+export const API_PROVIDER_TYPES = ["siliconflow", "tensdaq", "ai302", "openai-compatible", "openai", "deepseek", "google", "anthropic", "xai", "deeplx", "bedrock", "groq", "deepinfra", "mistral", "togetherai", "cohere", "fireworks", "cerebras", "replicate", "perplexity", "vercel", "openrouter", "ollama", "volcengine", "minimax", "alibaba-bailian", "alibaba-bailian-mt"] as const satisfies Readonly<
   (keyof typeof LLM_PROVIDER_MODELS | "deeplx")[]
 >
 export type APIProviderTypes = typeof API_PROVIDER_TYPES[number]
@@ -64,7 +64,7 @@ export function isAPIProviderConfig(config: ProviderConfig): config is APIProvid
   return isAPIProvider(config.provider)
 }
 
-export const PURE_API_PROVIDER_TYPES = ["deeplx"] as const satisfies Readonly<
+export const PURE_API_PROVIDER_TYPES = ["deeplx", "alibaba-bailian-mt"] as const satisfies Readonly<
   Exclude<APIProviderTypes, LLMProviderTypes>[]
 >
 export type PureAPIProviderTypes = typeof PURE_API_PROVIDER_TYPES[number]
@@ -84,7 +84,7 @@ export function isNonAPIProviderConfig(config: ProviderConfig): config is NonAPI
 }
 
 // all provider names
-export const ALL_PROVIDER_TYPES = ["google-translate", "microsoft-translate", "deeplx", "siliconflow", "tensdaq", "ai302", "openai-compatible", "openai", "deepseek", "google", "anthropic", "xai", "bedrock", "groq", "deepinfra", "mistral", "togetherai", "cohere", "fireworks", "cerebras", "replicate", "perplexity", "vercel", "openrouter", "ollama", "volcengine", "minimax", "alibaba-bailian"] as const satisfies Readonly<
+export const ALL_PROVIDER_TYPES = ["google-translate", "microsoft-translate", "deeplx", "siliconflow", "tensdaq", "ai302", "openai-compatible", "openai", "deepseek", "google", "anthropic", "xai", "bedrock", "groq", "deepinfra", "mistral", "togetherai", "cohere", "fireworks", "cerebras", "replicate", "perplexity", "vercel", "openrouter", "ollama", "volcengine", "minimax", "alibaba-bailian", "alibaba-bailian-mt"] as const satisfies Readonly<
   TranslateProviderTypes[]
 >
 export type AllProviderTypes = typeof ALL_PROVIDER_TYPES[number]
@@ -104,7 +104,10 @@ export function isPureTranslateProviderConfig(config: ProviderConfig): boolean {
 export const PROVIDER_BATCH_TRANSLATION_SUPPORT: ReadonlySet<AllProviderTypes> = new Set(LLM_PROVIDER_TYPES)
 
 // Which providers support context injection (AI smart context)
-export const PROVIDER_CONTEXT_INJECTION_SUPPORT: ReadonlySet<AllProviderTypes> = new Set(LLM_PROVIDER_TYPES)
+export const PROVIDER_CONTEXT_INJECTION_SUPPORT: ReadonlySet<AllProviderTypes> = new Set([
+  ...LLM_PROVIDER_TYPES,
+  "alibaba-bailian-mt",
+])
 
 export function supportsBatchTranslation(provider: AllProviderTypes): boolean {
   return PROVIDER_BATCH_TRANSLATION_SUPPORT.has(provider)
@@ -117,6 +120,22 @@ export function supportsContextInjection(provider: AllProviderTypes): boolean {
 }
 export function supportsContextInjectionConfig(config: ProviderConfig): boolean {
   return supportsContextInjection(config.provider)
+}
+
+// Providers that support model selection
+export type ModelSelectableProviderConfig = LLMProviderConfig | Extract<ProviderConfig, { provider: "alibaba-bailian-mt" }>
+export function hasModelSelectionUI(config: ProviderConfig): config is ModelSelectableProviderConfig {
+  return isLLMProvider(config.provider) || config.provider === "alibaba-bailian-mt"
+}
+
+// Providers using an OpenAI-compat endpoint with supports model listing
+export type OpenAICompatEndpointProviderConfig = CustomLLMProviderConfig | Extract<ProviderConfig, { provider: "alibaba-bailian-mt" }>
+export const OPENAI_COMPAT_ENDPOINT_PROVIDER_TYPES: ReadonlySet<AllProviderTypes> = new Set([
+  ...CUSTOM_LLM_PROVIDER_TYPES,
+  "alibaba-bailian-mt",
+] as const)
+export function isOpenAICompatEndpointProvider(config: ProviderConfig): config is OpenAICompatEndpointProviderConfig {
+  return OPENAI_COMPAT_ENDPOINT_PROVIDER_TYPES.has(config.provider)
 }
 
 /* ──────────────────────────────
@@ -259,6 +278,15 @@ const apiProviderConfigSchemaList = [
   ...llmProviderConfigSchemaList,
   baseAPIProviderConfigSchema.extend({
     provider: z.literal("deeplx"),
+  }),
+  baseAPIProviderConfigSchema.extend({
+    provider: z.literal("alibaba-bailian-mt"),
+    baseURL: z.string(),
+    model: z.object({
+      model: z.enum(["qwen-mt-plus", "qwen-mt-flash", "qwen-mt-lite"]),
+      isCustomModel: z.boolean(),
+      customModel: z.string().nullable(),
+    }),
   }),
 ] as const
 

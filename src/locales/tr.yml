@@ -164,6 +164,8 @@ options:
         vercel: Web içeriği çevirisi ve analizi için optimize edilmiş AI modelleri
         volcengine: Çeviri ve okuma için Doubao modelleri sunan ByteDance'ın bulut AI platformu
         minimax: Gelişmiş MiniMax-M2 modelleri sunan MiniMax AI platformu
+        alibabaBailian: Alibaba Cloud'un Bailian platformu, Qwen serisi modelleri sunar
+        alibabaBailianMT: Alibaba Cloud'un Bailian makine çeviri serisi, yüksek kaliteli çok dilli çeviri hizmetleri sağlar, yalnızca Qwen-MT serisi modelleri destekler
     apiKey:
       showAPIKey: API Anahtarını Göster
     howToConfigure: Nasıl yapılandırılır?

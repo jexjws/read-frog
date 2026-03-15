@@ -6,7 +6,7 @@ import { Readability } from "@mozilla/readability"
 import { LANG_CODE_TO_EN_NAME, LANG_CODE_TO_LOCALE_NAME } from "@read-frog/definitions"
 import { franc } from "franc"
 import { toast } from "sonner"
-import { isAPIProviderConfig, isLLMProviderConfig } from "@/types/config/provider"
+import { isAPIProviderConfig, isLLMProviderConfig, supportsContextInjectionConfig } from "@/types/config/provider"
 import { getProviderConfigById } from "@/utils/config/helpers"
 import { detectLanguage } from "@/utils/content/language"
 import { removeDummyNodes } from "@/utils/content/utils"
@@ -142,6 +142,9 @@ export async function buildHashComponents(
     const targetLangName = LANG_CODE_TO_EN_NAME[partialLangConfig.targetCode]
     const { systemPrompt, prompt } = await getTranslatePrompt(targetLangName, text, { isBatch: true })
     hashComponents.push(systemPrompt, prompt)
+  }
+
+  if (supportsContextInjectionConfig(providerConfig)) {
     hashComponents.push(enableAIContentAware ? "enableAIContentAware=true" : "enableAIContentAware=false")
 
     // Include article context in hash when AI Content Aware is enabled
@@ -190,11 +193,11 @@ export async function translateTextCore(options: TranslateTextOptions): Promise<
     }
   }
 
-  // Get article data for LLM providers (needed for both hash and request)
+  // Get article data for providers that support context injection (needed for both hash and request)
   let articleTitle: string | undefined
   let articleTextContent: string | undefined
 
-  if (isLLMProviderConfig(providerConfig)) {
+  if (supportsContextInjectionConfig(providerConfig)) {
     const articleData = await getOrFetchArticleData(enableAIContentAware)
     if (articleData) {
       articleTitle = articleData.title

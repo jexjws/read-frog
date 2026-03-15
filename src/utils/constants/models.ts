@@ -29,6 +29,7 @@ export const LLM_PROVIDER_MODELS = {
   "volcengine": ["doubao-seed-1-6-flash-250828", "doubao-seed-1-6-lite-251015", "doubao-seed-1-6-251015"],
   "minimax": ["MiniMax-M2", "MiniMax-M2-Stable"],
   "alibaba-bailian": ["qwen3.5-plus", "qwen3.5-flash", "qwen-flash", "qwen-long", "qwen-plus"],
+  "alibaba-bailian-mt": ["qwen-mt-plus", "qwen-mt-flash", "qwen-mt-lite"],
 } as const
 
 export const NON_API_TRANSLATE_PROVIDERS = ["google-translate", "microsoft-translate"] as const
@@ -37,7 +38,7 @@ export const NON_API_TRANSLATE_PROVIDERS_MAP: Record<typeof NON_API_TRANSLATE_PR
   "microsoft-translate": "Microsoft Translator",
 }
 
-export const PURE_TRANSLATE_PROVIDERS = ["google-translate", "microsoft-translate", "deeplx"] as const
+export const PURE_TRANSLATE_PROVIDERS = ["google-translate", "microsoft-translate", "deeplx", "alibaba-bailian-mt"] as const
 
 /**
  * Model options configuration.

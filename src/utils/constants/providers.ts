@@ -137,6 +137,11 @@ export const DEFAULT_LLM_PROVIDER_MODELS: LLMProviderModels = {
     isCustomModel: false,
     customModel: null,
   },
+  "alibaba-bailian-mt": {
+    model: "qwen-mt-flash",
+    isCustomModel: false,
+    customModel: null,
+  },
 }
 
 export const PROVIDER_ITEMS: Record<AllProviderTypes, { logo: (theme: Theme) => string, name: string, website: string }>
@@ -280,6 +285,11 @@ export const PROVIDER_ITEMS: Record<AllProviderTypes, { logo: (theme: Theme) => 
       logo: () => alibabaBailianLogo,
       name: "Alibaba Cloud Bailian",
       website: "https://bailian.console.aliyun.com/",
+    },
+    "alibaba-bailian-mt": {
+      logo: () => alibabaBailianLogo,
+      name: "Alibaba Cloud Bailian MT series",
+      website: "https://help.aliyun.com/model-studio/machine-translation",
     },
   }
 
@@ -509,6 +519,15 @@ export const DEFAULT_PROVIDER_CONFIG = {
     provider: "alibaba-bailian",
     baseURL: "https://dashscope.aliyuncs.com/compatible-mode/v1",
     model: DEFAULT_LLM_PROVIDER_MODELS["alibaba-bailian"],
+  },
+  "alibaba-bailian-mt": {
+    id: "alibaba-bailian-mt-default",
+    name: PROVIDER_ITEMS["alibaba-bailian-mt"].name,
+    description: i18n.t("options.apiProviders.providers.description.alibabaBailianMT"),
+    enabled: true,
+    provider: "alibaba-bailian-mt",
+    baseURL: "https://dashscope.aliyuncs.com/compatible-mode/v1",
+    model: DEFAULT_LLM_PROVIDER_MODELS["alibaba-bailian-mt"],
   },
 } as const satisfies Record<AllProviderTypes, ProviderConfig>
 

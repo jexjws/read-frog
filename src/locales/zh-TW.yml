@@ -165,6 +165,7 @@ options:
         volcengine: 字節跳動旗下雲平台，提供豆包系列大模型
         minimax: MiniMax AI平台，提供先進的MiniMax-M2系列大模型
         alibabaBailian: 阿里雲百煉平台，提供通義千問系列大模型
+        alibabaBailianMT: 阿里雲百煉機器翻譯系列，提供高品質多語言翻譯服務，僅支援 Qwen-MT 系列模型
     apiKey:
       showAPIKey: 顯示 API Key
     howToConfigure: 如何配置?

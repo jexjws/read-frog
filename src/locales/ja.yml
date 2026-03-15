@@ -164,6 +164,8 @@ options:
         vercel: ウェブコンテンツの翻訳と分析に最適化されたAIモデル
         volcengine: ByteDanceのクラウドAIプラットフォーム、Doubaoモデルを提供
         minimax: MiniMax AIプラットフォーム、先進的なMiniMax-M2モデルを提供
+        alibabaBailian: 阿里雲百煉プラットフォーム、通義千問シリーズモデルを提供
+        alibabaBailianMT: 阿里雲百煉機械翻訳シリーズ、高品質な多言語翻訳サービスを提供、Qwen-MT シリーズモデルのみ対応
     apiKey:
       showAPIKey: APIキーを表示
     howToConfigure: 設定方法は?

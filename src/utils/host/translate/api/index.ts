@@ -1,4 +1,5 @@
 export { aiTranslate } from "./ai"
+export { alibabaBailianMTTranslate } from "./alibaba-bailian-mt"
 export { deeplxTranslate } from "./deeplx"
 export { googleTranslate } from "./google"
 export { microsoftTranslate } from "./microsoft"

@@ -164,6 +164,8 @@ options:
         vercel: Các mô hình AI tối ưu hóa cho dịch và phân tích nội dung web
         volcengine: Nền tảng AI đám mây của ByteDance cung cấp các mô hình Doubao cho dịch và đọc
         minimax: Nền tảng AI MiniMax cung cấp các mô hình MiniMax-M2 tiên tiến
+        alibabaBailian: Nền tảng Alibaba Cloud Bailian cung cấp các mô hình series Qwen
+        alibabaBailianMT: Series dịch máy Alibaba Cloud Bailian, cung cấp dịch vụ dịch đa ngôn ngữ chất lượng cao, chỉ hỗ trợ các mô hình series Qwen-MT
     apiKey:
       showAPIKey: Hiển thị API Key
     howToConfigure: Cấu hình như thế nào?
