@@ -1,5 +1,5 @@
 import type { TestSeriesObject } from "./types"
-import { testSeries as v064TestSeries } from "./v064"
+import { testSeries as v065TestSeries } from "./v065"
 
 const NON_LLM_PROVIDERS = ["google-translate", "microsoft-translate", "deeplx"]
 
@@ -54,7 +54,7 @@ function resolveAIContentAwareProviderId(config: unknown): string {
   return "openai-default"
 }
 
-function migrateToV065Config(oldConfig: unknown): unknown {
+function migrateToV066Config(oldConfig: unknown): unknown {
   const oldConfigRecord = asRecord(oldConfig)
   const oldTranslate = asRecord(oldConfigRecord.translate)
 
@@ -75,12 +75,12 @@ function migrateToV065Config(oldConfig: unknown): unknown {
 }
 
 export const testSeries: TestSeriesObject = Object.fromEntries(
-  Object.entries(v064TestSeries).map(([seriesId, series]) => {
+  Object.entries(v065TestSeries).map(([seriesId, series]) => {
     return [
       seriesId,
       {
         ...series,
-        config: migrateToV065Config(series.config),
+        config: migrateToV066Config(series.config),
       },
     ]
   }),

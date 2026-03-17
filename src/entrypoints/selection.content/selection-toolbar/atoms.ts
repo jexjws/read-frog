@@ -54,7 +54,7 @@ export const selectionToolbarTranslateRequestAtom = createSelectionToolbarFeatur
   "selectionToolbar.translate",
   (config, providerConfig): SelectionToolbarTranslateRequestSlice => ({
     language: config.language,
-    enableAIContentAware: config.translate.enableAIContentAware,
+    enableAIContentAware: config.translate.aiContentAware.enabled,
     customPromptsConfig: config.translate.customPromptsConfig,
     providerConfig,
   }),

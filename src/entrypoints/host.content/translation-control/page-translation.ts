@@ -121,7 +121,7 @@ export class PageTranslationManager implements IPageTranslationManager {
       })
 
       this.isPageTranslating = true
-      await this.primeDocumentTitleContext(config.translate.enableAIContentAware)
+      await this.primeDocumentTitleContext(config.translate.aiContentAware.enabled)
       this.startDocumentTitleTracking()
 
       // Listen to existing elements when they enter the viewpoint

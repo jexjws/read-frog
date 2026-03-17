@@ -1,5 +1,5 @@
 /**
- * Migration script from v064 to v065
+ * Migration script from v065 to v066
  * - Replaces `translate.enableAIContentAware` with `translate.aiContentAware`
  * - Initializes `translate.aiContentAware.providerId`
  *
